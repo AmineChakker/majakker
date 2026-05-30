@@ -91,6 +91,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/schools/{school}', [Admin\SchoolController::class, 'update'])->name('schools.update');
         Route::delete('/schools/{school}', [Admin\SchoolController::class, 'destroy'])->name('schools.destroy');
         Route::get('/users', [Admin\UserController::class, 'index'])->name('users');
+        Route::post('/users', [Admin\UserController::class, 'store'])->name('users.store');
+        Route::patch('/users/{user}', [Admin\UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [Admin\UserController::class, 'destroy'])->name('users.destroy');
         Route::get('/moderation', [Admin\ModerationController::class, 'index'])->name('moderation');
         Route::get('/revenue', [Admin\RevenueController::class, 'index'])->name('revenue');
         Route::get('/reports', [Admin\ReportsController::class, 'index'])->name('reports');
