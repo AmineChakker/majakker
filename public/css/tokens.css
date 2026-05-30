@@ -1,0 +1,61 @@
+/* ── Design tokens — EduSphere / Majakker ────────────────────────────────── */
+
+:root {
+  /* warm Moroccan paper palette */
+  --bg: #FAF7F2;
+  --surface: #FFFFFF;
+  --surface-2: #F4EFE6;
+  --surface-3: #ECE4D6;
+  --ink: #1A1614;
+  --ink-2: #5C5346;
+  --ink-3: #9A9183;
+  --ink-4: #C7BFB1;
+  --line: rgba(26, 22, 20, 0.08);
+  --line-2: rgba(26, 22, 20, 0.14);
+
+  /* accents (low-chroma, set by tweaks) */
+  --c-blue: #3D5AFE;
+  --c-blue-soft: #E8ECFF;
+  --c-saffron: #D4A04A;
+  --c-saffron-soft: #FAF1DD;
+  --c-terracotta: #C97B5A;
+  --c-terracotta-soft: #F8E7DD;
+  --c-atlas: #4A9B8E;
+  --c-atlas-soft: #DEEFEC;
+
+  /* radii */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+
+  /* shadows — soft natural */
+  --sh-sm: 0 1px 0 rgba(26, 22, 20, 0.04), 0 1px 2px rgba(26, 22, 20, 0.04);
+  --sh-md: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 1px 2px rgba(26, 22, 20, 0.04), 0 8px 24px -12px rgba(26, 22, 20, 0.10);
+  --sh-lg: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 2px 4px rgba(26, 22, 20, 0.04), 0 24px 60px -20px rgba(26, 22, 20, 0.18);
+
+  /* type */
+  --f-display: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
+  --f-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* density */
+  --row-pad: 14px;
+  --gap: 14px;
+}
+
+[data-density="airy"]  { --row-pad: 22px; --gap: 22px; }
+[data-density="dense"] { --row-pad: 10px; --gap: 10px; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--f-ui);
+  color: var(--ink);
+  background: var(--bg);
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.005em;
+}
