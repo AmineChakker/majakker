@@ -13,9 +13,17 @@ class StoreAttachmentRequest extends FormRequest
             'file' => [
                 'required',
                 'file',
-                'max:51200', // 50 MB
-                'mimes:jpg,jpeg,png,webp,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,zip',
+                'max:204800', // 200 MB
+                'mimes:jpg,jpeg,png,webp,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,mp4,mov,webm,avi,mkv',
             ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'file.mimes' => 'Format non supporté. Acceptés : images, vidéos, PDF, Office, ZIP.',
+            'file.max'   => 'Fichier trop volumineux (max 200 Mo).',
         ];
     }
 }

@@ -251,15 +251,43 @@ html,body{height:100%;margin:0;overflow:hidden}
       @endforeach
     </nav>
 
-    <div class="adm-side-foot">
-      <x-ui.avatar :name="$user->name" size="30"/>
-      <div style="flex:1;min-width:0">
-        <div style="font:500 11.5px/1.2 var(--f-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $user->short_name }}</div>
-        <div style="font:400 10px/1.2 var(--f-ui);color:var(--mj-ink-3);margin-top:2px">Super admin</div>
+    <div x-data="{ open: false }" style="position:relative">
+      <div @click="open = !open" class="adm-side-foot" style="cursor:pointer" :style="open ? 'background:var(--surface-3)' : ''">
+        <x-ui.avatar :name="$user->name" size="30"/>
+        <div style="flex:1;min-width:0">
+          <div style="font:500 11.5px/1.2 var(--f-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $user->short_name }}</div>
+          <div style="font:400 10px/1.2 var(--f-ui);color:var(--mj-ink-3);margin-top:2px">Super admin</div>
+        </div>
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="var(--mj-ink-3)" stroke-width="1.5" stroke-linecap="round"
+             :style="open ? 'transform:rotate(180deg)' : ''" style="transition:transform .2s;flex-shrink:0">
+          <path d="M5 8l5 5 5-5"/>
+        </svg>
       </div>
-      <a href="{{ route('profile.edit') }}" style="color:var(--mj-ink-3)">
-        <x-ui.icon name="settings" size="14"/>
-      </a>
+
+      <div x-show="open" x-cloak @click.outside="open = false"
+           x-transition:enter="transition ease-out duration-100"
+           x-transition:enter-start="opacity-0 translate-y-1"
+           x-transition:enter-end="opacity-100 translate-y-0"
+           style="position:absolute;bottom:calc(100% + 6px);left:0;right:0;background:var(--mj-surface);border:0.5px solid var(--mj-line-2);border-radius:10px;box-shadow:0 16px 40px -12px rgba(20,21,43,.2);overflow:hidden;z-index:50">
+        <a href="{{ route('profile.edit') }}"
+           style="display:flex;align-items:center;gap:9px;padding:9px 12px;font:400 12.5px/1 var(--f-ui);color:var(--mj-ink-2);text-decoration:none;transition:background .12s"
+           onmouseenter="this.style.background='var(--surface-2)'" onmouseleave="this.style.background=''">
+          <x-ui.icon name="settings" size="13" style="color:var(--mj-ink-3)"/>
+          Paramètres
+        </a>
+        <div style="height:0.5px;background:var(--mj-line);margin:2px 0"></div>
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button type="submit"
+                  style="display:flex;align-items:center;gap:9px;width:100%;padding:9px 12px;font:400 12.5px/1 var(--f-ui);color:#B91C1C;background:0;border:0;cursor:pointer;text-align:left;transition:background .12s"
+                  onmouseenter="this.style.background='rgba(220,38,38,.05)'" onmouseleave="this.style.background=''">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 15l4-5-4-5M17 10H7M7 3H4a1 1 0 00-1 1v12a1 1 0 001 1h3"/>
+            </svg>
+            Se déconnecter
+          </button>
+        </form>
+      </div>
     </div>
   </aside>
 
