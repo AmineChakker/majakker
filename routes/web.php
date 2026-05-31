@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     AttachmentController,
 };
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Director;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'show'])->name('home');
@@ -73,21 +74,35 @@ Route::middleware('auth')->group(function () {
     // ── Director routes ───────────────────────────────────────────────────────
     Route::middleware('role:director,admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-        Route::get('/dashboard/teachers', [DashboardController::class, 'teachers'])->name('dashboard.teachers');
-        Route::post('/dashboard/teachers', [DashboardController::class, 'storeTeacher'])->name('dashboard.teachers.store');
-        Route::patch('/dashboard/teachers/{user}', [DashboardController::class, 'updateTeacher'])->name('dashboard.teachers.update');
-        Route::delete('/dashboard/teachers/{user}', [DashboardController::class, 'destroyTeacher'])->name('dashboard.teachers.destroy');
-        Route::get('/dashboard/students', [DashboardController::class, 'students'])->name('dashboard.students');
-        Route::post('/dashboard/students', [DashboardController::class, 'storeStudent'])->name('dashboard.students.store');
-        Route::patch('/dashboard/students/{user}', [DashboardController::class, 'updateStudent'])->name('dashboard.students.update');
-        Route::delete('/dashboard/students/{user}', [DashboardController::class, 'destroyStudent'])->name('dashboard.students.destroy');
-        Route::post('/dashboard/students/{user}/suspend', [DashboardController::class, 'suspendStudent'])->name('dashboard.students.suspend');
-        Route::post('/dashboard/students/{user}/unsuspend', [DashboardController::class, 'unsuspendStudent'])->name('dashboard.students.unsuspend');
         Route::get('/dashboard/moderation', [ModerationController::class, 'index'])->name('moderation.index');
         Route::post('/dashboard/moderation/{report}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
         Route::post('/dashboard/moderation/{report}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
         Route::post('/dashboard/moderation/{report}/ignore', [ModerationController::class, 'ignore'])->name('moderation.ignore');
         Route::get('/dashboard/analytics', [AnalyticsController::class, 'school'])->name('analytics');
+
+        // Filières
+        Route::get('/dashboard/filieres', [Director\FilieresController::class, 'index'])->name('dashboard.filieres');
+        Route::post('/dashboard/filieres', [Director\FilieresController::class, 'store'])->name('dashboard.filieres.store');
+        Route::patch('/dashboard/filieres/{filiere}', [Director\FilieresController::class, 'update'])->name('dashboard.filieres.update');
+        Route::delete('/dashboard/filieres/{filiere}', [Director\FilieresController::class, 'destroy'])->name('dashboard.filieres.destroy');
+
+        // Classes
+        Route::get('/dashboard/classes', [Director\ClassesController::class, 'index'])->name('dashboard.classes');
+        Route::post('/dashboard/classes', [Director\ClassesController::class, 'store'])->name('dashboard.classes.store');
+        Route::patch('/dashboard/classes/{class}', [Director\ClassesController::class, 'update'])->name('dashboard.classes.update');
+        Route::delete('/dashboard/classes/{class}', [Director\ClassesController::class, 'destroy'])->name('dashboard.classes.destroy');
+
+        // Teachers
+        Route::get('/dashboard/teachers', [Director\TeachersController::class, 'index'])->name('dashboard.teachers');
+        Route::post('/dashboard/teachers', [Director\TeachersController::class, 'store'])->name('dashboard.teachers.store');
+        Route::patch('/dashboard/teachers/{teacher}', [Director\TeachersController::class, 'update'])->name('dashboard.teachers.update');
+        Route::delete('/dashboard/teachers/{teacher}', [Director\TeachersController::class, 'destroy'])->name('dashboard.teachers.destroy');
+
+        // Students
+        Route::get('/dashboard/students', [Director\StudentsController::class, 'index'])->name('dashboard.students');
+        Route::post('/dashboard/students', [Director\StudentsController::class, 'store'])->name('dashboard.students.store');
+        Route::patch('/dashboard/students/{student}', [Director\StudentsController::class, 'update'])->name('dashboard.students.update');
+        Route::delete('/dashboard/students/{student}', [Director\StudentsController::class, 'destroy'])->name('dashboard.students.destroy');
     });
 
     // ── Admin routes ──────────────────────────────────────────────────────────
