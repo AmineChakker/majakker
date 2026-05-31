@@ -15,7 +15,7 @@ $visLabel = match($user->role) {
 
 <div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:14px 18px;border-bottom:0.5px solid var(--line);background:var(--surface);"
      x-data="{ text: '', submitting: false }">
-    <x-ui.avatar :name="$user->name" size="28"/>
+    <x-ui.avatar :name="$user->name" :avatar="$user->avatar_path ? Storage::url($user->avatar_path) : null" size="28"/>
     <div style="display:flex;flex-direction:column;gap:8px">
         <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

@@ -178,7 +178,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div style="grid-column:1/-1">
           <label style="font:500 12px/1 var(--f-ui);color:var(--mj-ink-2);display:block;margin-bottom:6px">Nom de l'école *</label>
-          <input name="name" value="{{ old('name') }}" required placeholder="ex. Lycée Majakker"
+          <input name="name" value="{{ old('name') }}" required placeholder="ex. Lycée UNIVERCONNECT"
                  style="width:100%;height:42px;padding:0 14px;border-radius:10px;border:0.5px solid var(--mj-line-2);background:var(--surface-2);font:400 14px/1 var(--f-ui);color:var(--mj-ink);outline:none;box-sizing:border-box"
                  onfocus="this.style.borderColor='#7E5BEF';this.style.boxShadow='0 0 0 3px rgba(126,91,239,.12)'"
                  onblur="this.style.borderColor='var(--mj-line-2)';this.style.boxShadow='none'"/>

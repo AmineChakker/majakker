@@ -35,6 +35,7 @@ $paths = [
     'sparkle'     => '<path d="M10 2 L11 8 L17 9 L11 10 L10 17 L9 10 L3 9 L9 8 z M16 3 L16.5 5 L18 5.5 L16.5 6 L16 8 L15.5 6 L14 5.5 L15.5 5 z" '.$stroke.'/>',
     'moderation'  => '<path d="M10 3 L17 6 V11 a7 7 0 0 1-7 6 a7 7 0 0 1-7-6 V6 z" '.$stroke.'/><path d="M7 10 L9 12 L13 8" '.$stroke.'/>',
     'calendar'    => '<rect x="3" y="5" width="14" height="12" rx="1.5" '.$stroke.'/><path d="M3 9 H17 M7 3 V6 M13 3 V6" '.$stroke.'/>',
+    'logout'      => '<path d="M15 4 L19 10 L15 16 M19 10 H6 M4 4 h2 a2 2 0 0 1 2 2 v8 a2 2 0 0 1-2 2H4" '.$stroke.'/>',
 ];
 @endphp
 <svg width="{{ $size }}" height="{{ $size }}" viewBox="0 0 20 20" aria-hidden="true"@if($style) style="{{ $style }}"@endif>

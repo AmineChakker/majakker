@@ -65,7 +65,7 @@ $navGroups = match($role) {
             <x-ui.zellige-star size="20" color="var(--bg)" opacity="0.95"/>
         </div>
         <div style="display:flex;flex-direction:column;line-height:1.1">
-            <span style="font:600 13.5px/1 var(--f-ui);letter-spacing:-0.01em">EduSphere</span>
+            <span style="font:600 13.5px/1 var(--f-ui);letter-spacing:-0.01em">UniverConnect</span>
             <span style="font:500 9.5px/1 var(--f-mono);color:var(--ink-3);letter-spacing:0.08em;margin-top:3px">BETA · MA</span>
         </div>
     </div>
@@ -109,7 +109,7 @@ $navGroups = match($role) {
 
     {{-- User footer --}}
     <div style="display:flex;align-items:center;gap:9px;padding:8px;border-radius:10px;background:var(--surface-2);">
-        <x-ui.avatar :name="$user->name" size="26"/>
+        <x-ui.avatar :name="$user->name" :avatar="$user->avatar_path ? Storage::url($user->avatar_path) : null" size="26"/>
         <div style="flex:1;min-width:0">
             <div style="font:500 11.5px/1.2 var(--f-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $user->short_name }}</div>
             <div style="font:400 10px/1.2 var(--f-ui);color:var(--ink-3);margin-top:1px">{{ $user->role_label }}</div>

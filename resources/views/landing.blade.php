@@ -1,4 +1,4 @@
-<x-layouts.guest :title="'Majakker — La place publique numérique des écoles marocaines'">
+<x-layouts.guest :title="'UNIVERCONNECT — La place publique numérique des écoles marocaines'">
 <style>
 @keyframes lp-fadeup{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes lp-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -27,32 +27,32 @@
 {{-- Nav --}}
 <nav class="lp-nav">
     <a href="/" style="display:flex;align-items:center">
-        <img src="{{ asset('images/logo.png') }}" alt="Majakker" style="height:42px;width:auto"/>
+        <img src="{{ asset('images/logo.png') }}" alt="UniverConnect" style="height:42px;width:auto"/>
     </a>
     <div style="display:flex;gap:26px;margin-left:28px">
-        @foreach(['Plateforme','Écoles','Élèves','Manifeste','Tarifs'] as $link)
+        {{-- @foreach(['Plateforme','Écoles','Élèves','Manifeste','Tarifs'] as $link)
         <a href="#" style="font:500 13px/1 var(--f-ui);color:var(--ink-2);text-decoration:none">{{ $link }}</a>
-        @endforeach
+        @endforeach --}}
     </div>
     <span style="flex:1"></span>
     <a href="{{ route('login') }}" style="font:500 13px/1 var(--f-ui);color:var(--ink-2);text-decoration:none">Connexion</a>
-    <a href="{{ route('login') }}" class="lp-cta" style="height:40px;padding:0 18px;font-size:13px">Demander une démo <x-ui.icon name="arrow" size="13"/></a>
+    {{-- <a href="{{ route('login') }}" class="lp-cta" style="height:40px;padding:0 18px;font-size:13px">Demander une démo <x-ui.icon name="arrow" size="13"/></a> --}}
 </nav>
 
 {{-- Hero --}}
 <section style="padding:110px 56px 110px;display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center;position:relative;max-width:1440px;margin:0 auto">
     <div style="animation:lp-fadeup .8s cubic-bezier(.2,.7,.3,1) backwards .1s">
-        <div class="lp-eyebrow" style="margin-bottom:20px">Majakker · Learn · Connect · Grow</div>
+        <div class="lp-eyebrow" style="margin-bottom:20px">UNIVERCONNECT · Learn · Connect · Grow</div>
         <h1 class="lp-display" style="font-size:clamp(56px,8.4vw,108px);margin:0 0 28px">
             La place publique<br>numérique des<br>écoles <span class="mj-grad-text">marocaines</span>.
         </h1>
         <p style="font:400 17px/1.55 var(--f-ui);color:var(--ink-2);max-width:520px;margin:0 0 36px">
-            Majakker réunit élèves, enseignants et directions dans un espace social calme et productif. Pensé au Maroc, hébergé au Maroc.
+            UNIVERCONNECT réunit élèves, enseignants et directions dans un espace social calme et productif. Pensé au Maroc, hébergé au Maroc.
         </p>
-        <div style="display:flex;gap:12px;margin-bottom:56px">
+        {{-- <div style="display:flex;gap:12px;margin-bottom:56px">
             <a href="{{ route('login') }}" class="lp-cta">Demander une démo <x-ui.icon name="arrow" size="13"/></a>
             <a href="#" class="lp-cta lp-cta-ghost">Voir une école en direct</a>
-        </div>
+        </div> --}}
         <div style="display:flex;gap:36px;padding-top:28px;border-top:0.5px solid var(--line)">
             @foreach([['142','écoles partenaires'],['86 K','élèves actifs'],['4 villes','Casa · Rabat · Marrakech · Tanger']] as [$n,$l])
             <div>
@@ -71,7 +71,7 @@
                 <span style="width:8px;height:8px;border-radius:999px;background:var(--c-saffron)"></span>
                 <span style="width:8px;height:8px;border-radius:999px;background:var(--c-atlas)"></span>
                 <span style="flex:1"></span>
-                <span class="eyebrow" style="font-size:9px">FIL · MAJAKKER</span>
+                <span class="eyebrow" style="font-size:9px">FIL · UNIVERCONNECT</span>
             </div>
             <div style="padding:14px;display:flex;flex-direction:column;gap:14px">
                 @foreach($previewPosts as $p)
@@ -153,7 +153,7 @@
 {{-- Footer --}}
 <footer style="padding:60px 56px 40px;border-top:0.5px solid var(--line);max-width:1440px;margin:0 auto">
     <div style="display:flex;align-items:center;justify-content:space-between;padding-top:24px;border-top:0.5px solid var(--line)">
-        <span style="font:400 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--ink-3)">MAJAKKER © {{ date('Y') }} — RABAT, MAROC</span>
+        <span style="font:400 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--ink-3)">UNIVERCONNECT © {{ date('Y') }} — RABAT, MAROC</span>
         <span style="font:400 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--ink-4)">v.2026.05 · BETA</span>
     </div>
 </footer>

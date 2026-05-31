@@ -15,7 +15,7 @@ class LandingController extends Controller
             };
         }
         $schools      = School::where('is_active', true)->take(6)->pluck('name');
-        $previewPosts = Post::with('user')->latest()->take(2)->get();
+        $previewPosts = Post::with('user','school')->latest()->take(2)->get();
         return view('landing', compact('schools', 'previewPosts'));
     }
 }

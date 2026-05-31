@@ -98,7 +98,7 @@
         </div>
         <div style="flex:1">
           <div style="font:600 13.5px/1.2 var(--f-ui)">Administrateurs plateforme</div>
-          <div style="font:400 11px/1 var(--f-mono);color:var(--mj-ink-3);margin-top:3px">EduSphere SA · {{ $admins->count() }} compte(s)</div>
+          <div style="font:400 11px/1 var(--f-mono);color:var(--mj-ink-3);margin-top:3px">UNIVERCONNECT SA · {{ $admins->count() }} compte(s)</div>
         </div>
         <span class="adm-badge role-admin">ADMIN</span>
       </div>

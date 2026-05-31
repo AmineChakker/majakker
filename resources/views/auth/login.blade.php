@@ -1,4 +1,4 @@
-<x-layouts.guest :title="'Majakker — Connexion'">
+<x-layouts.guest :title="'UNIVERCONNECT — Connexion'">
 <style>
 @keyframes lg-fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .lg-root{--mj-purple:#7E5BEF;--mj-blue:#2563EB;--mj-ink:#14152B;--mj-ink-2:#3F4360;--mj-ink-3:#7A7E96;--mj-bg:#FAFAFC;--mj-surface:#FFFFFF;--mj-line:rgba(20,21,43,.08);--mj-line-2:rgba(20,21,43,.14);--mj-gradient:linear-gradient(135deg,#7E5BEF 0%,#2563EB 100%);display:grid;grid-template-columns:1fr 1fr;height:100vh;min-height:100vh;background:var(--mj-bg)}
@@ -27,13 +27,13 @@
     <div style="position:absolute;bottom:-80px;left:-80px;width:360px;height:360px;background:linear-gradient(135deg,#8B5CF6,#0EA5E9);border-radius:50%;filter:blur(60px);opacity:.32;pointer-events:none"></div>
 
     <a href="/" style="position:relative;display:flex;align-items:center;text-decoration:none">
-        <img src="{{ asset('images/logo.png') }}" alt="Majakker" style="height:44px;width:auto"/>
+        <img src="{{ asset('images/logo.png') }}" alt="UNIVERCONNECT" style="height:44px;width:auto"/>
     </a>
 
     <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;max-width:480px;animation:lg-fadeup .8s cubic-bezier(.2,.7,.3,1) backwards .1s">
         <div style="font:500 11px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:rgba(250,247,242,.55);display:inline-flex;align-items:center;gap:12px;margin-bottom:22px">
             <span style="width:28px;height:0.5px;background:rgba(250,247,242,.4)"></span>
-            Majakker · La plateforme scolaire marocaine
+            UNIVERCONNECT · La plateforme scolaire marocaine
         </div>
         <h1 style="font:400 clamp(44px,5.8vw,72px)/.97 var(--f-display);letter-spacing:-.03em;margin:0 0 28px;color:#fff">
             L'école <span class="mj-grad-text">enfin</span><br>connectée.
@@ -73,14 +73,14 @@
         <div style="display:flex;flex-direction:column;gap:8px">
             <span style="font:500 11px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--mj-ink-3);display:inline-flex;align-items:center;gap:10px"><span style="width:22px;height:0.5px;background:var(--mj-ink-3)"></span>Connexion · Sécurisée</span>
             <h1 class="lg-title">Bon <span class="mj-grad-text">retour</span>.</h1>
-            <p style="font:400 14px/1.55 var(--f-ui);color:var(--mj-ink-2);margin:0">Connectez-vous à votre espace Majakker.</p>
+            <p style="font:400 14px/1.55 var(--f-ui);color:var(--mj-ink-2);margin:0">Connectez-vous à votre espace UNIVERCONNECT.</p>
         </div>
 
         @if(session('status'))
         <div style="padding:10px 14px;border-radius:8px;background:var(--c-atlas-soft);color:#2D6B61;font:500 13px/1.4 var(--f-ui)">{{ session('status') }}</div>
         @endif
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        {{-- <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
             <button type="button" class="lg-sso-btn">
                 <svg width="17" height="17" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908C16.658 14.376 17.64 12.069 17.64 9.2z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
                 Google
@@ -89,15 +89,15 @@
                 <svg width="16" height="16" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>
                 Microsoft
             </button>
-        </div>
+        </div> 
 
-        <div class="lg-or">ou par email</div>
+        <div class="lg-or">ou par email</div>--}}
 
         <div style="display:flex;flex-direction:column;gap:8px">
             <label style="font:500 12.5px/1 var(--f-ui);color:var(--mj-ink-2)" for="email">Adresse email</label>
             <div class="lg-input-wrap">
                 <span class="lg-input-icon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 5.5 L10 11.5 L17.5 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="email" placeholder="prenom.nom@majakker.ma" class="lg-input"/>
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus autocomplete="email" placeholder="prenom.nom@domaine.ma" class="lg-input"/>
             </div>
             @error('email')<p style="font:400 12px/1 var(--f-ui);color:var(--c-terracotta);margin:4px 0 0">{{ $message }}</p>@enderror
         </div>
@@ -128,9 +128,9 @@
             <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10 H16 M12 6 L16 10 L12 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
 
-        <div style="text-align:center;font:400 13px/1 var(--f-ui);color:var(--mj-ink-3)">
+        {{-- <div style="text-align:center;font:400 13px/1 var(--f-ui);color:var(--mj-ink-3)">
             Pas encore de compte ? <a href="{{ route('register') }}" style="font:500 13px/1 var(--f-ui);color:#7E5BEF;text-decoration:none">Créer un compte →</a>
-        </div>
+        </div> --}}
     </form>
     <div style="margin-top:auto;padding-top:32px;font:400 10.5px/1.4 var(--f-mono);letter-spacing:.1em;color:var(--mj-ink-3);text-transform:uppercase;text-align:center">
         Hébergé à Rabat · Loi 09-08 · Données personnelles

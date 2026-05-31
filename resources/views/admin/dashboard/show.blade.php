@@ -1,4 +1,4 @@
-<x-layouts.admin title="Tableau de bord" subtitle="EduSphere SA · Plateforme">
+<x-layouts.admin title="Tableau de bord" subtitle="UNIVERCONNECT SA · Plateforme">
 <div style="padding:28px 32px 64px;display:flex;flex-direction:column;gap:22px;max-width:1600px;margin:0 auto">
 
   {{-- ── Header ── --}}

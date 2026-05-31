@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>{{ $title ? $title.' — ' : '' }}Majakker Admin</title>
+<title>{{ $title ? $title.' — ' : '' }}UNIVERCONNECT Admin</title>
 <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -227,7 +227,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     <div class="adm-school-card">
       <div class="adm-school-logo">M</div>
       <div style="flex:1;min-width:0">
-        <div style="font:500 11.5px/1.2 var(--f-ui)">EduSphere SA</div>
+        <div style="font:500 11.5px/1.2 var(--f-ui)">UNIVERCONNECT SA</div>
         <div style="font:400 10px/1.2 var(--f-ui);color:var(--mj-ink-3);margin-top:2px">Plateforme · {{ \App\Models\School::count() }} écoles</div>
       </div>
       <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="var(--mj-ink-3)" stroke-width="1.4" stroke-linecap="round"><path d="M5 7.5L10 12.5L15 7.5"/></svg>
@@ -250,17 +250,24 @@ html,body{height:100%;margin:0;overflow:hidden}
       </div>
       @endforeach
     </nav>
-
-    <div class="adm-side-foot">
-      <x-ui.avatar :name="$user->name" size="30"/>
-      <div style="flex:1;min-width:0">
+<div class="adm-side-foot">
+    <x-ui.avatar :name="$user->name" size="30"/>
+    <div style="flex:1;min-width:0">
         <div style="font:500 11.5px/1.2 var(--f-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $user->short_name }}</div>
         <div style="font:400 10px/1.2 var(--f-ui);color:var(--mj-ink-3);margin-top:2px">Super admin</div>
-      </div>
-      <a href="{{ route('profile.edit') }}" style="color:var(--mj-ink-3)">
-        <x-ui.icon name="settings" size="14"/>
-      </a>
     </div>
+
+    <a href="{{ route('profile.edit') }}" style="color:var(--mj-ink-3)">
+        <x-ui.icon name="settings" size="14"/>
+    </a>
+
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" style="display:flex;align-items:center;border:0;background:transparent;padding:0;cursor:pointer;color:var(--mj-ink-3)" title="Déconnexion">
+            <x-ui.icon name="logout" size="14"/>
+        </button>
+    </form>
+</div>
   </aside>
 
   {{-- ── Main ── --}}

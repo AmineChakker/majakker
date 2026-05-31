@@ -17,7 +17,7 @@ class ProfileController extends Controller {
         $user = $request->user();
         $request->validate(['name'=>'required|string|max:255','bio'=>'nullable|string|max:1000','location'=>'nullable|string|max:100']);
         $user->update($request->only('name','bio','location'));
-        return back()->with('success','Profil mis à jour');
+        return redirect()->route('profile.show', ['user' => $user])->with('success', 'Profil mis à jour');
     }
     public function updateAvatar(Request $request) {
         $request->validate(['avatar'=>'required|image|max:5120']);

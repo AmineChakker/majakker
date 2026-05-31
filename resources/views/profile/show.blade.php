@@ -10,7 +10,13 @@
     <div class="zellige" style="position:absolute;inset:0;opacity:.06;pointer-events:none"></div>
     <div style="position:relative;display:flex;gap:24px;align-items:flex-end">
       <div style="width:96px;height:96px;border-radius:24px;background:var(--surface);border:0.5px solid var(--line);box-shadow:var(--sh-md);display:flex;align-items:center;justify-content:center;font:400 42px/1 var(--f-display);color:var(--ink)">
-        {{ $user->initials }}
+    @if($user->avatar_path)
+  <img src="{{ Storage::url($user->avatar_path) }}"
+       alt=""
+       style="width:100%;height:100%;object-fit:cover;border-radius:24px">
+@else
+  {{ $user->initials }}
+@endif
       </div>
       <div style="flex:1">
         <span class="eyebrow">{{ $user->role_label }}{{ $user->school ? ' · '.$user->school->name : '' }}</span>
@@ -19,7 +25,7 @@
           @if($user->location)<span>{{ $user->location }}</span><span>·</span>@endif
           <span>Membre depuis {{ $user->joined_at?->year ?? date('Y') }}</span>
           <span>·</span>
-          <span>@{{ $user->handle }}</span>
+          {{-- <span>@{{ $user->handle }}</span> --}}
         </div>
       </div>
       @if(auth()->id() !== $user->id)

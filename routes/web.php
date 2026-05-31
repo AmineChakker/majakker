@@ -74,7 +74,15 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:director,admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
         Route::get('/dashboard/teachers', [DashboardController::class, 'teachers'])->name('dashboard.teachers');
+        Route::post('/dashboard/teachers', [DashboardController::class, 'storeTeacher'])->name('dashboard.teachers.store');
+        Route::patch('/dashboard/teachers/{user}', [DashboardController::class, 'updateTeacher'])->name('dashboard.teachers.update');
+        Route::delete('/dashboard/teachers/{user}', [DashboardController::class, 'destroyTeacher'])->name('dashboard.teachers.destroy');
         Route::get('/dashboard/students', [DashboardController::class, 'students'])->name('dashboard.students');
+        Route::post('/dashboard/students', [DashboardController::class, 'storeStudent'])->name('dashboard.students.store');
+        Route::patch('/dashboard/students/{user}', [DashboardController::class, 'updateStudent'])->name('dashboard.students.update');
+        Route::delete('/dashboard/students/{user}', [DashboardController::class, 'destroyStudent'])->name('dashboard.students.destroy');
+        Route::post('/dashboard/students/{user}/suspend', [DashboardController::class, 'suspendStudent'])->name('dashboard.students.suspend');
+        Route::post('/dashboard/students/{user}/unsuspend', [DashboardController::class, 'unsuspendStudent'])->name('dashboard.students.unsuspend');
         Route::get('/dashboard/moderation', [ModerationController::class, 'index'])->name('moderation.index');
         Route::post('/dashboard/moderation/{report}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
         Route::post('/dashboard/moderation/{report}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');

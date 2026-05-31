@@ -28,9 +28,10 @@
     @php
     $kpis = [
       ['Élèves actifs', $activeStudents, 'sur '.$totalStudents.' inscrits', 'blue', '+'.round(($activeStudents/max($totalStudents,1))*100).'%'],
+      ['Enseignants actifs', $activeTeachers, 'sur '.$totalTeachers.' inscrits', 'blue', '+'.round(($activeTeachers/max($totalTeachers,1))*100).'%'],
       ['Publications', $postsThisWeek, 'cette semaine', 'saffron', ($postsLastWeek>0?'+'.round((($postsThisWeek-$postsLastWeek)/max($postsLastWeek,1))*100).'%':'—')],
-      ['Signalements', $pendingReports, 'à modérer', 'terracotta', $pendingReports.' en attente'],
-      ['Engagement', $engagementPct.'%', 'réactions/publication', 'atlas', '+4 pts'],
+      ['Élèves suspendus', $suspendedStudents, 'sur '.$totalStudents.' inscrits', 'blue', '+'.round(($suspendedStudents/max($totalStudents,1))*100).'%'],
+    
     ];
     @endphp
     @foreach($kpis as [$lbl,$big,$sub,$tone,$delta])

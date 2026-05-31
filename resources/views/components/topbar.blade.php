@@ -23,7 +23,7 @@
     <div x-data="{ open: false }" style="position:relative">
         <div @click="open=true" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:999px;background:var(--surface);border:0.5px solid var(--line);width:280px;color:var(--ink-3);cursor:default;">
             <x-ui.icon name="search" size="14"/>
-            <span style="font:400 12px/1 var(--f-ui)">Rechercher dans Majakker…</span>
+            <span style="font:400 12px/1 var(--f-ui)">Rechercher</span>
             <span style="flex:1"></span>
             <span class="mono" style="font-size:9.5px;padding:2px 5px;border-radius:4px;background:var(--surface-2)">⌘K</span>
         </div>
@@ -39,7 +39,7 @@
                     </div>
                 </form>
                 <div style="padding:12px 20px 20px;color:var(--ink-3);font:400 13px/1.5 var(--f-ui);text-align:center">
-                    Tapez pour rechercher dans Majakker
+                    Tapez pour rechercher dans UNIVERCONNECT
                 </div>
             </div>
         </div>
@@ -53,8 +53,28 @@
         @endif
     </a>
 
-    {{-- User avatar --}}
-    <a href="{{ route('profile.show', auth()->user()) }}" style="text-decoration:none">
-        <x-ui.avatar :name="auth()->user()->name" size="32"/>
-    </a>
+    {{-- User avatar / dropdown --}}
+    <div x-data="{ open: false }" style="position:relative">
+        <div @click="open = !open" style="cursor:pointer">
+            <x-ui.avatar
+                :name="auth()->user()->name"
+                :avatar="auth()->user()->avatar_path ? Storage::url(auth()->user()->avatar_path) : null"
+                size="32"
+            />
+        </div>
+        <div x-show="open" @click.outside="open = false" @keydown.escape.window="open = false"
+             x-transition:enter=""
+             x-cloak
+             style="position:absolute;top:100%;right:0;margin-top:8px;min-width:170px;background:var(--surface);border:0.5px solid var(--line);border-radius:10px;box-shadow:var(--sh-lg);padding:6px;z-index:50;">
+            <a href="{{ route('profile.show', auth()->user()) }}" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font:500 12.5px/1 var(--f-ui);color:var(--ink);text-decoration:none;transition:background 0.14s" onmouseover="this.style.background='var(--surface-2)'" onmouseout="this.style.background='transparent'">
+                <x-ui.icon name="users" size="14" style="color:var(--ink-3)"/> Profil
+            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" style="display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:transparent;font:500 12.5px/1 var(--f-ui);color:var(--c-terracotta);text-align:left;cursor:pointer;transition:background 0.14s" onmouseover="this.style.background='var(--surface-2)'" onmouseout="this.style.background='transparent'">
+                    <x-ui.icon name="logout" size="14" style="color:var(--c-terracotta)"/> Déconnexion
+                </button>
+            </form>
+        </div>
+    </div>
 </header>

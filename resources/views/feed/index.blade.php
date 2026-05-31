@@ -178,7 +178,7 @@ html,body,#app-shell{height:100%;overflow:hidden}
       <div style="display:flex;flex-wrap:wrap;gap:4px;font:400 10px/1.4 var(--f-ui);color:var(--ink-3)">
         <span>Aide</span><span>·</span><span>Charte</span><span>·</span><span>Confidentialité</span><span>·</span><span>Contact</span>
       </div>
-      <div style="font:400 9.5px/1.4 var(--f-mono);color:var(--ink-4);letter-spacing:.06em">EDUSPHERE © {{ date('Y') }} — RABAT, MA</div>
+      <div style="font:400 9.5px/1.4 var(--f-mono);color:var(--ink-4);letter-spacing:.06em">UNIVERCONNECT © {{ date('Y') }} — RABAT, MA</div>
     </section>
   </aside>
 </div>
