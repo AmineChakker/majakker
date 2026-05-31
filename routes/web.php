@@ -5,13 +5,15 @@ use App\Http\Controllers\{
     CommentController, PollController, ProfileController, GroupController,
     MessageController, EventController, NotificationController,
     SearchController, DashboardController, ModerationController, AnalyticsController,
-    AttachmentController,
+    AttachmentController, ContactController,
 };
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Director;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'show'])->name('home');
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {

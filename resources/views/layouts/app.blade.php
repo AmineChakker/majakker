@@ -14,10 +14,50 @@
 <link rel="stylesheet" href="{{ asset('css/animations.css') }}"/>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>
+/* ── Override warm palette with cool blue-tinted Majakker brand theme ── */
+:root {
+  --bg:        #FAFAFC;
+  --surface:   #FFFFFF;
+  --surface-2: #F2F2F8;
+  --surface-3: #E6E7F0;
+  --ink:       #14152B;
+  --ink-2:     #3F4360;
+  --ink-3:     #7A7E96;
+  --ink-4:     #B7BAC9;
+  --line:      rgba(20,21,43,.08);
+  --line-2:    rgba(20,21,43,.14);
+  --c-blue:       #2563EB;
+  --c-blue-soft:  #E8EEFE;
+  --c-saffron:    #7E5BEF;
+  --c-saffron-soft: #EDE7FE;
+  --c-terracotta: #EC4899;
+  --c-terracotta-soft: #FCE7F3;
+  --c-atlas:      #4A9B8E;
+  --c-atlas-soft: #DCEFEC;
+}
+
 html,body{height:100%;margin:0;overflow:hidden;}
 .app-shell{display:flex;height:100%;width:100%;background:var(--bg);}
 .app-main{flex:1;display:flex;flex-direction:column;min-width:0;height:100%;}
 .app-body{flex:1;min-height:0;overflow:hidden;}
+
+/* ── Nav item — gradient active state ── */
+.nav-item.active {
+  background: linear-gradient(135deg,#7E5BEF,#2563EB) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px -4px rgba(94,57,224,.4);
+}
+.nav-item.active svg, .nav-item.active x-ui\.icon {
+  color: rgba(255,255,255,.9) !important;
+}
+.nav-item { border-radius: 10px; }
+.nav-item:hover { background: var(--surface-2); }
+
+/* ── Chip overrides for blue ink base ── */
+.chip-saffron    { background: #EDE7FE; color: #6D28D9; }
+.chip-terracotta { background: #FCE7F3; color: #BE185D; }
+.chip-atlas      { background: #DCEFEC; color: #2D6B61; }
+.chip-blue       { background: #E8EEFE; color: #1D4ED8; }
 
 /* Mobile sidebar overlay */
 .sidebar-overlay{display:none;position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.35);backdrop-filter:blur(2px)}

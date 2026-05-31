@@ -61,30 +61,26 @@ $navGroups = match($role) {
 };
 @endphp
 
-<aside class="app-sidebar" :class="{ open: sidebarOpen }" style="width:240px;height:100%;background:var(--bg);border-right:0.5px solid var(--line);padding:16px 12px 14px;display:flex;flex-direction:column;gap:16px;flex-shrink:0;overflow:hidden;">
+<aside class="app-sidebar" :class="{ open: sidebarOpen }" style="width:240px;height:100%;background:var(--surface);border-right:0.5px solid var(--line);padding:16px 12px 14px;display:flex;flex-direction:column;gap:16px;flex-shrink:0;overflow:hidden;position:relative;">
+    {{-- Gradient accent line top-right --}}
+    <div style="position:absolute;top:0;right:0;width:1px;height:240px;background:linear-gradient(180deg,rgba(126,91,239,.5),rgba(37,99,235,.5),transparent);opacity:.5;pointer-events:none"></div>
 
     {{-- Brand --}}
-    <div style="display:flex;align-items:center;gap:9px;padding:2px 6px">
-        <div style="width:26px;height:26px;border-radius:7px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;">
-            <x-ui.zellige-star size="20" color="var(--bg)" opacity="0.95"/>
-        </div>
-        <div style="display:flex;flex-direction:column;line-height:1.1">
-            <span style="font:600 13.5px/1 var(--f-ui);letter-spacing:-0.01em">EduSphere</span>
-            <span style="font:500 9.5px/1 var(--f-mono);color:var(--ink-3);letter-spacing:0.08em;margin-top:3px">BETA · MA</span>
-        </div>
-    </div>
+    <a href="{{ route('home') }}" style="display:flex;align-items:center;gap:9px;padding:2px 6px;text-decoration:none">
+        <img src="{{ asset('images/logo.png') }}" alt="Majakker" style="height:32px;width:auto;display:block"/>
+    </a>
 
     {{-- School card --}}
     @if($user->school)
-    <div style="padding:10px 12px;border-radius:10px;background:var(--surface);border:0.5px solid var(--line);display:flex;align-items:center;gap:10px;">
-        <div style="width:28px;height:28px;border-radius:7px;background:var(--c-saffron-soft);color:#8A6520;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:15px;">
+    <div style="padding:10px 12px;border-radius:12px;background:linear-gradient(135deg,rgba(126,91,239,.08),rgba(37,99,235,.08));border:0.5px solid rgba(126,91,239,.18);display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;">
+        <div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#7E5BEF,#2563EB);color:#fff;display:flex;align-items:center;justify-content:center;font:600 13px/1 var(--f-ui);flex-shrink:0;box-shadow:0 4px 10px -3px rgba(94,57,224,.45);">
             {{ $user->school->initial }}
         </div>
         <div style="flex:1;min-width:0">
             <div style="font:500 11.5px/1.2 var(--f-ui);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $user->school->name }}</div>
             <div style="font:400 10px/1.2 var(--f-ui);color:var(--ink-3);margin-top:2px">{{ $user->school->city }} · {{ number_format($user->school->student_count) }} élèves</div>
         </div>
-        <x-ui.icon name="chevronDown" size="12" style="color:var(--ink-3)"/>
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="var(--ink-3)" stroke-width="1.5" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg>
     </div>
     @endif
 
@@ -103,7 +99,7 @@ $navGroups = match($role) {
                 }
             @endphp
             <a href="{{ $href }}" class="nav-item {{ $isActive ? 'active' : '' }}" style="text-decoration:none">
-                <x-ui.icon name="{{ $item['icon'] }}" size="15" style="color:{{ $isActive ? 'var(--ink)' : 'var(--ink-3)' }}"/>
+                <x-ui.icon name="{{ $item['icon'] }}" size="15" style="color:{{ $isActive ? 'rgba(255,255,255,.9)' : 'var(--ink-3)' }}"/>
                 <span>{{ $item['label'] }}</span>
             </a>
             @endforeach

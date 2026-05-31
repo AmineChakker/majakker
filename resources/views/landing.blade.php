@@ -159,7 +159,7 @@
   </div>
   <span style="flex:1"></span>
   <a href="{{ route('login') }}" class="lp-nav-link" style="color:var(--ink-2)">Connexion</a>
-  <a href="{{ route('login') }}" class="lp-cta" style="height:40px;padding:0 18px;font-size:13px">
+  <a href="{{ route('contact') }}" class="lp-cta" style="height:40px;padding:0 18px;font-size:13px">
     Demander une démo
     <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 10h10M12 6l4 4-4 4"/></svg>
   </a>
@@ -192,11 +192,11 @@
           Majakker réunit élèves, enseignants et directions dans un espace social calme et productif. Pensé au Maroc, hébergé au Maroc, parlé en français et en darija — sans algorithme, sans bruit, sans distraction.
         </p>
         <div style="display:flex;gap:12px">
-          <a href="{{ route('login') }}" class="lp-cta">
+          <a href="{{ route('contact') }}" class="lp-cta">
             Demander une démo
             <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 10h10M12 6l4 4-4 4"/></svg>
           </a>
-          <a href="{{ route('login') }}" class="lp-cta lp-cta-ghost">Voir une école en direct</a>
+          <a href="{{ route('contact') }}" class="lp-cta lp-cta-ghost">Voir une école en direct</a>
         </div>
         <div style="display:flex;gap:36px;margin-top:56px;padding-top:28px;border-top:.5px solid var(--line)">
           @foreach([['142','écoles partenaires'],['86 K','élèves actifs'],['4 villes','Casa · Rabat · Marrakech · Tanger']] as [$n,$l])
@@ -528,7 +528,7 @@
         </p>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <a href="{{ route('login') }}" class="lp-cta lp-cta-light" style="height:52px;font-size:14px;justify-content:center">
+        <a href="{{ route('contact') }}" class="lp-cta lp-cta-light" style="height:52px;font-size:14px;justify-content:center">
           Réserver une démo
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 10h10M12 6l4 4-4 4"/></svg>
         </a>
