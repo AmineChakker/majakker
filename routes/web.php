@@ -78,7 +78,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/dashboard/moderation/{report}/approve', [ModerationController::class, 'approve'])->name('moderation.approve');
         Route::post('/dashboard/moderation/{report}/reject', [ModerationController::class, 'reject'])->name('moderation.reject');
         Route::post('/dashboard/moderation/{report}/ignore', [ModerationController::class, 'ignore'])->name('moderation.ignore');
+    });
+    Route::middleware('role:director,admin,teacher')->group(function () {
         Route::get('/dashboard/analytics', [AnalyticsController::class, 'school'])->name('analytics');
+    });
+    Route::middleware('role:director,admin')->group(function () {
 
         // Filières
         Route::get('/dashboard/filieres', [Director\FilieresController::class, 'index'])->name('dashboard.filieres');
