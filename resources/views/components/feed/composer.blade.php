@@ -11,8 +11,8 @@ $placeholder = match($user->role) {
      @dragover.prevent="dragging=true;expand()"
      @dragleave.prevent="dragging=false"
      @drop.prevent="handleDrop($event)"
-     style="border-bottom:0.5px solid var(--line);background:var(--surface);transition:background .2s"
-     :style="dragging ? 'background:var(--c-blue-soft);border-color:var(--c-blue)' : ''">
+     style="background:var(--surface);transition:background .18s"
+     :style="dragging ? 'background:var(--c-blue-soft)' : ''">
 
   {{-- ── Form (reference only, submission is via doSubmit) ── --}}
   <form x-ref="form" action="{{ route('posts.store') }}" method="POST">
