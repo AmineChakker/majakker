@@ -126,15 +126,16 @@
          style="height:42px;padding:0 18px;border-radius:10px;border:0.5px solid var(--mj-line-2);background:var(--surface-2);font:500 13px/42px var(--f-ui);color:var(--mj-ink-2);text-decoration:none;display:inline-block">
         Annuler
       </a>
-      <form action="{{ route('admin.schools.destroy', $school) }}" method="POST" style="margin-left:auto"
-            onsubmit="return confirm('Supprimer définitivement « {{ addslashes($school->name) }} » ?')">
-        @csrf @method('DELETE')
-        <button type="submit"
-                style="height:42px;padding:0 18px;border-radius:10px;border:0.5px solid rgba(220,38,38,.25);background:rgba(220,38,38,.05);font:500 13px/1 var(--f-ui);color:#B91C1C;cursor:pointer">
-          Supprimer l'école
-        </button>
-      </form>
     </div>
+  </form>
+
+  <form action="{{ route('admin.schools.destroy', $school) }}" method="POST" style="margin-top:12px"
+        onsubmit="return confirm('Supprimer définitivement « {{ addslashes($school->name) }} » ?')">
+    @csrf @method('DELETE')
+    <button type="submit"
+            style="height:42px;padding:0 18px;border-radius:10px;border:0.5px solid rgba(220,38,38,.25);background:rgba(220,38,38,.05);font:500 13px/1 var(--f-ui);color:#B91C1C;cursor:pointer">
+      Supprimer l'école
+    </button>
   </form>
 </div>
 </x-layouts.admin>
