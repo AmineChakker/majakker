@@ -229,17 +229,34 @@
           $sevLabel = match($sev) { 'high'=>'HAUT','medium'=>'MOY.',default=>'BAS' };
         @endphp
         <div class="dir-mod-item">
+          {{-- Author of the flagged post --}}
           <div style="display:flex;align-items:center;gap:8px">
             <x-ui.avatar :name="$report->post?->user?->name ?? '?'" size="26"/>
-            <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 12px/1 var(--f-ui)">
-              {{ $report->post?->user?->name ?? 'Anonyme' }}
+            <div style="flex:1;min-width:0">
+              <div style="font:500 12px/1.2 var(--f-ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                {{ $report->post?->user?->name ?? 'Anonyme' }}
+              </div>
+              @if($report->reporter)
+              <div style="font:400 10.5px/1 var(--f-ui);color:var(--ink-3);margin-top:2px">
+                Signalé par {{ $report->reporter->name }}
+              </div>
+              @endif
             </div>
             <span class="dir-sev {{ $sevClass }}">{{ $sevLabel }}</span>
-            @if($report->ai_score)
-            <span style="font:500 10px/1 var(--f-mono);color:var(--ink-3)">{{ number_format($report->ai_score,2) }}</span>
-            @endif
           </div>
-          <div style="font:400 11.5px/1.4 var(--f-ui);color:var(--ink-2)">{{ $report->reason }}</div>
+          {{-- Reason --}}
+          <div style="display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:8px;background:rgba(220,38,38,.05);border:0.5px solid rgba(220,38,38,.12)">
+            <x-ui.icon name="flag" size="11" style="color:#B91C1C;flex-shrink:0;margin-top:1px"/>
+            <span style="font:400 11.5px/1.4 var(--f-ui);color:#B91C1C">{{ $report->reason }}</span>
+          </div>
+          {{-- Post preview --}}
+          @if($report->post?->body)
+          <div style="font:400 11.5px/1.45 var(--f-ui);color:var(--ink-3);padding:6px 0;
+                      overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">
+            "{{ \Illuminate\Support\Str::limit($report->post->body, 100) }}"
+          </div>
+          @endif
+          {{-- Actions --}}
           <div style="display:flex;gap:5px">
             <form action="{{ route('moderation.approve', $report) }}" method="POST" style="display:inline">@csrf
               <button style="height:26px;padding:0 10px;border-radius:7px;border:0.5px solid var(--line-2);background:var(--surface);font:500 10.5px/1 var(--f-ui);color:var(--ink-2);cursor:pointer">Approuver</button>
@@ -345,6 +362,100 @@
         </div>
       </div>
       @endforeach
+    </div>
+  </div>
+
+  {{-- ── Messages ── --}}
+  <div class="dir-card dir-fadeup dir-d3" style="display:flex;flex-direction:column;gap:0">
+    <header style="display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:0.5px solid var(--line)">
+      <div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#7E5BEF,#2563EB);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <x-ui.icon name="msg" size="14" style="color:#fff"/>
+      </div>
+      <div>
+        <span class="dir-eyebrow" style="display:block;margin-bottom:2px">Messagerie</span>
+        <span style="font:400 18px/1 var(--f-display);letter-spacing:-.02em">Messages récents</span>
+      </div>
+      <span style="flex:1"></span>
+      @if($unreadTotal > 0)
+      <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:999px;background:linear-gradient(135deg,#7E5BEF,#2563EB);color:#fff;font:600 10px/1 var(--f-mono)">
+        {{ $unreadTotal }} NON LU{{ $unreadTotal > 1 ? 'S' : '' }}
+      </span>
+      @endif
+      <a href="{{ route('messages') }}"
+         style="display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:8px;border:0.5px solid var(--line-2);background:var(--surface-2);font:500 11px/1 var(--f-ui);color:var(--ink-2);text-decoration:none;transition:all .15s"
+         onmouseenter="this.style.borderColor='rgba(126,91,239,.3)';this.style.color='#7E5BEF'" onmouseleave="this.style.borderColor='var(--line-2)';this.style.color='var(--ink-2)'">
+        Tout voir →
+      </a>
+    </header>
+
+    {{-- Conversations list --}}
+    @forelse($recentConversations as $conv)
+    @php
+      $roleColor = match($conv->role) { 'teacher'=>'atlas','director'=>'saffron',default=>'blue' };
+      $roleLabel = match($conv->role) { 'teacher'=>'Enseignant','director'=>'Directeur','student'=>'Élève',default=>$conv->role_label };
+    @endphp
+    <a href="{{ route('messages.show', $conv) }}"
+       style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--line);text-decoration:none;color:inherit;transition:background .12s;margin:0 -18px;padding-left:18px;padding-right:18px"
+       onmouseenter="this.style.background='var(--surface-2)'" onmouseleave="this.style.background=''">
+
+      {{-- Avatar with unread dot --}}
+      <div style="position:relative;flex-shrink:0">
+        <x-ui.avatar :name="$conv->name" size="38"/>
+        @if($conv->unread_count > 0)
+        <span style="position:absolute;top:-2px;right:-2px;min-width:16px;height:16px;padding:0 3px;border-radius:999px;background:linear-gradient(135deg,#7E5BEF,#2563EB);color:#fff;font:600 9px/16px var(--f-mono);text-align:center;border:2px solid var(--surface)">
+          {{ $conv->unread_count }}
+        </span>
+        @endif
+      </div>
+
+      {{-- Name + preview --}}
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
+          <span style="font:{{ $conv->unread_count ? '700' : '500' }} 13px/1.2 var(--f-ui);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            {{ $conv->name }}
+          </span>
+          <span style="flex-shrink:0;padding:1px 6px;border-radius:4px;font:600 8.5px/1.5 var(--f-mono);background:var(--c-{{ $roleColor }}-soft);color:var(--c-{{ $roleColor }})">
+            {{ $roleLabel }}
+          </span>
+        </div>
+        <div style="font:400 11.5px/1.3 var(--f-ui);color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          @if($conv->last_message?->sender_id === auth()->id())
+          <span style="color:var(--ink-4)">Vous : </span>
+          @endif
+          {{ \Illuminate\Support\Str::limit($conv->last_message?->body ?? '…', 55) }}
+        </div>
+      </div>
+
+      {{-- Time --}}
+      <div style="flex-shrink:0;text-align:right">
+        <div style="font:400 10px/1 var(--f-mono);color:var(--ink-4)">
+          {{ $conv->last_message?->created_at->format('H:i') }}
+        </div>
+        <div style="font:400 9.5px/1 var(--f-mono);color:var(--ink-4);margin-top:3px">
+          {{ $conv->last_message?->created_at->locale('fr')->isoFormat('D MMM') }}
+        </div>
+      </div>
+    </a>
+    @empty
+    <div style="padding:36px 0;text-align:center">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:16px;background:var(--surface-2);margin-bottom:12px">
+        <x-ui.icon name="msg" size="24" style="color:var(--ink-4)"/>
+      </div>
+      <div style="font:400 14px/1.4 var(--f-ui);color:var(--ink-3)">Aucune conversation pour l'instant.</div>
+    </div>
+    @endforelse
+
+    {{-- Quick compose CTA --}}
+    <div style="padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <span style="font:400 11.5px/1.3 var(--f-ui);color:var(--ink-3)">
+        Contactez enseignants et élèves directement.
+      </span>
+      <a href="{{ route('messages') }}"
+         style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:9px;background:linear-gradient(135deg,#7E5BEF,#2563EB);color:#fff;font:500 12px/1 var(--f-ui);text-decoration:none;box-shadow:0 4px 14px -4px rgba(94,57,224,.4);transition:filter .18s"
+         onmouseenter="this.style.filter='brightness(1.1)'" onmouseleave="this.style.filter=''">
+        <x-ui.icon name="plus" size="11"/>
+        Nouveau message
+      </a>
     </div>
   </div>
 

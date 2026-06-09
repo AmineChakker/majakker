@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ModeratePost;
-use App\Models\{Post, PostAttachment, Hashtag};
+use App\Models\{Post, PostAttachment, Hashtag, Group};
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -22,15 +22,30 @@ class PostController extends Controller
             return response()->json(['errors' => ['body' => ['Le message ou une pièce jointe est requis.']]], 422);
         }
 
-        $user = $request->user();
+        $user    = $request->user();
+        $groupId = $request->group_id;
+        $group   = null;
+
+        if ($groupId) {
+            $group = Group::find($groupId);
+            if (!$group || $group->school_id !== $user->school_id) {
+                return response()->json(['errors' => ['group_id' => ['Groupe introuvable.']]], 422);
+            }
+            $isMember            = $group->members()->where('user_id', $user->id)->exists();
+            $isTeacherSupervisor = $user->isTeacher() && $group->teacher_id === $user->id;
+            if (!$isMember && !$isTeacherSupervisor && !$user->canModerate()) {
+                return response()->json(['errors' => ['group_id' => ['Vous devez être membre de ce club pour publier.']]], 403);
+            }
+        }
+
         $post = Post::create([
             'user_id'         => $user->id,
             'school_id'       => $user->school_id,
-            'group_id'        => $request->group_id,
+            'group_id'        => $groupId,
             'body'            => $request->body ?? '',
             'title'           => $request->title,
             'is_announcement' => in_array($user->role, ['director', 'teacher']),
-            'visibility'      => 'school',
+            'visibility'      => $groupId ? 'group' : 'school',
         ]);
 
         // Link uploaded attachments to this post
@@ -42,12 +57,13 @@ class PostController extends Controller
 
         ModeratePost::dispatch($post)->onQueue('default');
 
-        // doSubmit() fetches this endpoint and expects a redirect or JSON
+        $redirect = $groupId ? route('groups.show', $groupId) : route('feed');
+
         if ($request->expectsJson() || $request->wantsJson()) {
-            return response()->json(['ok' => true, 'redirect' => route('feed')]);
+            return response()->json(['ok' => true, 'redirect' => $redirect]);
         }
 
-        return redirect()->route('feed')->with('success', 'Publication créée');
+        return redirect($redirect)->with('success', 'Publication créée');
     }
 
     public function show(Post $post)

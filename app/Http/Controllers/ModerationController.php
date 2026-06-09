@@ -1,13 +1,43 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\ModerationReport;
+use App\Models\{ModerationReport, Post};
 use Illuminate\Http\Request;
 
 class ModerationController extends Controller {
+
+    public function store(Post $post, Request $request)
+    {
+        $user = $request->user();
+
+        abort_if($post->school_id !== $user->school_id, 403);
+        abort_if($post->user_id === $user->id, 403, 'Vous ne pouvez pas signaler votre propre publication.');
+
+        $request->validate(['reason' => 'required|string|max:500']);
+
+        $alreadyPending = ModerationReport::where('post_id', $post->id)
+            ->where('reported_by', $user->id)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($alreadyPending) {
+            return response()->json(['message' => 'Vous avez déjà signalé cette publication.'], 409);
+        }
+
+        ModerationReport::create([
+            'post_id'     => $post->id,
+            'reported_by' => $user->id,
+            'reason'      => $request->reason,
+            'severity'    => 'medium',
+            'status'      => 'pending',
+        ]);
+
+        return response()->json(['message' => 'Signalement envoyé. Merci de nous aider à maintenir un espace sûr.']);
+    }
+
     public function index(Request $request) {
         $tab     = $request->get('tab','pending');
         $reports = ModerationReport::whereHas('post',fn($q)=>$q->where('school_id',$request->user()->school_id))
-            ->where('status',$tab)->with('post.user','reporter')->latest()->paginate(20);
+            ->where('status',$tab)->with('post.user','post.group','reporter','reviewer')->latest()->paginate(20);
         return view('dashboard.moderation.index', compact('reports','tab'));
     }
     public function approve(ModerationReport $report) {

@@ -15,6 +15,12 @@ Alpine.data('postCard', (postId, initLiked, initLikes, initSparked, initSparks) 
     comments:       [],
     commentsLoaded: false,
     commentCount:   0,
+    showReport:     false,
+    reportReason:   '',
+    reportDetail:   '',
+    reportSent:     false,
+    reportError:    '',
+    reporting:      false,
 
     init() {
         const el = this.$el.querySelector('[data-comment-count]');
@@ -76,6 +82,30 @@ Alpine.data('postCard', (postId, initLiked, initLikes, initSparked, initSparks) 
         this.submitting = false;
     },
 
+    async submitReport() {
+        const reason = this.reportReason + (this.reportDetail.trim() ? ' — ' + this.reportDetail.trim() : '');
+        if (!reason.trim() || this.reporting) return;
+        this.reporting   = true;
+        this.reportError = '';
+        try {
+            const res = await fetch(`/posts/${postId}/report`, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken(), 'Accept': 'application/json' },
+                body:    JSON.stringify({ reason }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                this.reportSent = true;
+                setTimeout(() => { this.showReport = false; this.reportSent = false; this.reportReason = ''; this.reportDetail = ''; }, 2200);
+            } else {
+                this.reportError = data.message ?? 'Une erreur est survenue.';
+            }
+        } catch {
+            this.reportError = 'Erreur réseau.';
+        }
+        this.reporting = false;
+    },
+
     timeAgo(dateStr) {
         const d = Math.floor((Date.now() - new Date(dateStr)) / 60000);
         if (d < 1)  return 'à l\'instant';
@@ -87,8 +117,9 @@ Alpine.data('postCard', (postId, initLiked, initLikes, initSparked, initSparks) 
 }));
 
 // ── Composer: rich post with uploads ─────────────────────────────────────────
-Alpine.data('composer', (uploadUrl, postUrl) => ({
+Alpine.data('composer', (uploadUrl, postUrl, groupId = null) => ({
     text:        '',
+    groupId,
     attachments: [],  // { tempId, id, url, kind, name, size, uploading, error }
     dragging:    false,
     expanded:    false,
@@ -234,6 +265,7 @@ Alpine.data('composer', (uploadUrl, postUrl) => ({
         const freshFd = new FormData();
         freshFd.append('_token', csrfToken());
         freshFd.append('body',   this.text);
+        if (this.groupId) freshFd.append('group_id', this.groupId);
 
         this.uploadedIds.forEach(id => freshFd.append('attachment_ids[]', id));
 

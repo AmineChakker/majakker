@@ -1,3 +1,4 @@
+@props(['groupId' => null])
 @php
 $user = auth()->user();
 $placeholder = match($user->role) {
@@ -7,7 +8,7 @@ $placeholder = match($user->role) {
 };
 @endphp
 
-<div x-data="composer('{{ route('attachments.store') }}', '{{ route('posts.store') }}')"
+<div x-data="composer('{{ route('attachments.store') }}', '{{ route('posts.store') }}', {{ $groupId ?? 'null' }})"
      @dragover.prevent="dragging=true;expand()"
      @dragleave.prevent="dragging=false"
      @drop.prevent="handleDrop($event)"

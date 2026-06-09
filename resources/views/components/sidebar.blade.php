@@ -18,10 +18,11 @@ $navGroups = match($role) {
     ],
     'teacher' => [
         ['hd' => 'Enseignement', 'items' => [
-            ['route' => 'feed', 'label' => 'Fil de l\'école', 'icon' => 'feed'],
-            ['route' => 'classes', 'label' => 'Mes cours', 'icon' => 'classes'],
-            ['route' => 'homework', 'label' => 'Devoirs', 'icon' => 'book'],
-            ['route' => 'messages', 'label' => 'Messages', 'icon' => 'msg'],
+            ['route' => 'feed',     'label' => 'Fil de l\'école', 'icon' => 'feed'],
+            ['route' => 'classes',  'label' => 'Mes cours',       'icon' => 'classes'],
+            ['route' => 'clubs',    'label' => 'Clubs',           'icon' => 'clubs'],
+            ['route' => 'homework', 'label' => 'Devoirs',         'icon' => 'book'],
+            ['route' => 'messages', 'label' => 'Messages',        'icon' => 'msg'],
         ]],
         ['hd' => 'Outils', 'items' => [
             ['route' => 'analytics', 'label' => 'Analyse', 'icon' => 'chart'],
@@ -34,10 +35,11 @@ $navGroups = match($role) {
             ['route' => 'feed', 'label' => 'Fil de l\'école', 'icon' => 'feed'],
         ]],
         ['hd' => 'Gestion scolaire', 'items' => [
-            ['route' => 'dashboard.filieres', 'label' => 'Filières', 'icon' => 'book'],
-            ['route' => 'dashboard.classes',  'label' => 'Classes',  'icon' => 'classes'],
+            ['route' => 'dashboard.filieres', 'label' => 'Filières',    'icon' => 'book'],
+            ['route' => 'dashboard.classes',  'label' => 'Classes',     'icon' => 'classes'],
+            ['route' => 'dashboard.clubs',    'label' => 'Clubs',       'icon' => 'clubs'],
             ['route' => 'dashboard.teachers', 'label' => 'Enseignants', 'icon' => 'users'],
-            ['route' => 'dashboard.students', 'label' => 'Élèves',   'icon' => 'users'],
+            ['route' => 'dashboard.students', 'label' => 'Élèves',      'icon' => 'users'],
         ]],
         ['hd' => 'Administration', 'items' => [
             ['route' => 'events.index',      'label' => 'Événements',  'icon' => 'calendar'],

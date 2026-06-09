@@ -9,6 +9,7 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Director;
+use App\Http\Controllers\Director\ClubsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'show'])->name('home');
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('/posts/{post}/pin', [PostController::class, 'pin'])->name('posts.pin');
+    Route::post('/posts/{post}/report', [ModerationController::class, 'store'])->name('posts.report');
     Route::post('/posts/{post}/react', [ReactionController::class, 'toggle'])->name('posts.react');
     Route::get('/posts/{post}/comments', [CommentController::class, 'index'])->name('posts.comments.index');
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('posts.comments.store');
@@ -109,6 +111,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/dashboard/students', [Director\StudentsController::class, 'store'])->name('dashboard.students.store');
         Route::patch('/dashboard/students/{student}', [Director\StudentsController::class, 'update'])->name('dashboard.students.update');
         Route::delete('/dashboard/students/{student}', [Director\StudentsController::class, 'destroy'])->name('dashboard.students.destroy');
+
+        // Clubs
+        Route::get('/dashboard/clubs', [ClubsController::class, 'index'])->name('dashboard.clubs');
+        Route::post('/dashboard/clubs', [ClubsController::class, 'store'])->name('dashboard.clubs.store');
+        Route::patch('/dashboard/clubs/{club}', [ClubsController::class, 'update'])->name('dashboard.clubs.update');
+        Route::delete('/dashboard/clubs/{club}', [ClubsController::class, 'destroy'])->name('dashboard.clubs.destroy');
     });
 
     // ── Admin routes ──────────────────────────────────────────────────────────

@@ -64,8 +64,7 @@
         <span style="font:400 11px/1 var(--f-ui);color:var(--ink-4)">·</span>
         <span style="font:400 11px/1 var(--f-mono);color:var(--ink-4)">{{ $post->time_ago }}</span>
         <span style="flex:1"></span>
-        {{-- Context menu --}}
-        @if($me->id===$post->user_id || $me->isDirector() || $me->isAdmin())
+        {{-- Context menu (always shown; options differ by role) --}}
         <div x-data="{open:false}" style="position:relative;flex-shrink:0">
           <button @click="open=!open" @click.outside="open=false"
                   style="width:24px;height:24px;border-radius:6px;border:0;background:0;cursor:pointer;
@@ -76,9 +75,11 @@
               <circle cx="10" cy="5"  r="1.4"/><circle cx="10" cy="10" r="1.4"/><circle cx="10" cy="15" r="1.4"/>
             </svg>
           </button>
-          <div x-show="open" x-cloak
+          <div x-show="open" x-cloak @click="open=false"
                style="position:absolute;right:0;top:28px;background:var(--surface);border:0.5px solid var(--line-2);
-                      border-radius:10px;box-shadow:var(--sh-lg);min-width:150px;overflow:hidden;z-index:20">
+                      border-radius:10px;box-shadow:var(--sh-lg);min-width:164px;overflow:hidden;z-index:20">
+
+            {{-- Pin (director / admin only) --}}
             @if($me->isDirector() || $me->isAdmin())
             <form action="{{ route('posts.pin',$post) }}" method="POST">
               @csrf
@@ -92,6 +93,9 @@
               </button>
             </form>
             @endif
+
+            {{-- Delete (author OR director/admin) --}}
+            @if($me->id===$post->user_id || $me->isDirector() || $me->isAdmin())
             <form action="{{ route('posts.destroy',$post) }}" method="POST"
                   onsubmit="return confirm('Supprimer cette publication ?')">
               @csrf @method('DELETE')
@@ -104,9 +108,23 @@
                 Supprimer
               </button>
             </form>
+            @endif
+
+            {{-- Report (anyone except the author and moderators) --}}
+            @if($me->id!==$post->user_id && !$me->isDirector() && !$me->isAdmin())
+            @if($me->isDirector() || $me->isAdmin())<div style="height:0.5px;background:var(--line);margin:2px 0"></div>@endif
+            <button type="button"
+                    @click="showReport=true"
+                    style="width:100%;padding:9px 14px;border:0;background:0;text-align:left;
+                           font:400 12.5px/1 var(--f-ui);color:var(--ink-2);cursor:pointer;
+                           display:flex;align-items:center;gap:8px"
+                    @mouseenter="$el.style.background='var(--surface-2)'" @mouseleave="$el.style.background=''">
+              <x-ui.icon name="flag" size="12" style="color:var(--ink-3)"/>
+              Signaler
+            </button>
+            @endif
           </div>
         </div>
-        @endif
       </div>
 
       {{-- Title --}}
@@ -299,4 +317,127 @@
 
     </div>
   </div>
+
+  {{-- ── Report modal (teleported to <body> so position:fixed escapes any ancestor transform/stacking context) ── --}}
+  @if($me->id!==$post->user_id && !$me->isDirector() && !$me->isAdmin())
+  <template x-teleport="body">
+  <div x-show="showReport" x-cloak
+       style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px"
+       @keydown.escape.window="showReport=false">
+    <div style="position:absolute;inset:0;background:rgba(20,21,43,.45);backdrop-filter:blur(5px)"
+         @click="showReport=false"></div>
+    <div style="position:relative;z-index:1;width:100%;max-width:420px;background:var(--surface);border-radius:16px;
+                border:0.5px solid var(--line);box-shadow:0 32px 80px -20px rgba(20,21,43,.38);overflow:hidden"
+         @click.stop>
+
+      {{-- Header --}}
+      <div style="display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:0.5px solid var(--line)">
+        <div style="width:32px;height:32px;border-radius:9px;background:rgba(220,38,38,.10);
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <x-ui.icon name="flag" size="14" style="color:#B91C1C"/>
+        </div>
+        <div>
+          <div style="font:600 14px/1.2 var(--f-ui);color:var(--ink)">Signaler cette publication</div>
+          <div style="font:400 11.5px/1.2 var(--f-ui);color:var(--ink-3);margin-top:2px">Le directeur examinera votre signalement.</div>
+        </div>
+        <button @click="showReport=false"
+                style="margin-left:auto;width:26px;height:26px;border-radius:7px;border:0.5px solid var(--line-2);
+                       background:var(--surface-2);cursor:pointer;display:flex;align-items:center;
+                       justify-content:center;color:var(--ink-3);flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 4l12 12M16 4L4 16"/>
+          </svg>
+        </button>
+      </div>
+
+      {{-- Body --}}
+      <div style="padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+
+        {{-- Success state --}}
+        <template x-if="reportSent">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 0;text-align:center">
+            <div style="width:48px;height:48px;border-radius:999px;background:rgba(16,185,129,.12);
+                        display:flex;align-items:center;justify-content:center">
+              <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#047857" stroke-width="1.6" stroke-linecap="round">
+                <path d="M4 10l5 5L16 6"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font:600 14px/1.3 var(--f-ui);color:var(--ink);margin-bottom:4px">Signalement envoyé</div>
+              <div style="font:400 12.5px/1.5 var(--f-ui);color:var(--ink-3)">Merci de nous aider à maintenir un espace sûr.</div>
+            </div>
+          </div>
+        </template>
+
+        {{-- Form --}}
+        <template x-if="!reportSent">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="font:500 12px/1 var(--f-ui);color:var(--ink-2)">Motif du signalement *</div>
+            @foreach([
+              ['Contenu inapproprié ou offensant',     'inappropriate'],
+              ['Harcèlement ou intimidation',           'harassment'],
+              ['Fausses informations',                  'misinformation'],
+              ['Spam ou publicité',                     'spam'],
+              ['Autre',                                 'other'],
+            ] as [$label, $value])
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+                          border:0.5px solid var(--line-2);cursor:pointer;transition:all .14s"
+                   :style="reportReason==='{{ $value }}' ? 'border-color:#7E5BEF;background:rgba(126,91,239,.06)' : ''"
+                   @mouseenter="reportReason!=='{{ $value }}' && ($el.style.background='var(--surface-2)')"
+                   @mouseleave="reportReason!=='{{ $value }}' && ($el.style.background='')">
+              <input type="radio" name="report_reason_{{ $post->id }}" value="{{ $value }}"
+                     x-model="reportReason"
+                     style="accent-color:#7E5BEF;width:15px;height:15px;flex-shrink:0"/>
+              <span style="font:400 13px/1.3 var(--f-ui);color:var(--ink-2)">{{ $label }}</span>
+            </label>
+            @endforeach
+
+            {{-- Optional detail --}}
+            <div>
+              <label style="font:500 11.5px/1 var(--f-ui);color:var(--ink-3);display:block;margin-bottom:6px">Précisions (optionnel)</label>
+              <textarea x-model="reportDetail" rows="2" placeholder="Décrivez le problème…"
+                        style="width:100%;padding:9px 12px;border-radius:9px;border:0.5px solid var(--line-2);
+                               background:var(--surface-2);font:400 13px/1.5 var(--f-ui);color:var(--ink);
+                               outline:none;resize:none;box-sizing:border-box;transition:border-color .16s"
+                        @focus="$el.style.borderColor='#7E5BEF'" @blur="$el.style.borderColor='var(--line-2)'"></textarea>
+            </div>
+
+            {{-- Error --}}
+            <div x-show="reportError" x-cloak
+                 style="padding:9px 12px;border-radius:9px;background:rgba(220,38,38,.07);
+                        border:0.5px solid rgba(220,38,38,.2);color:#B91C1C;font:400 12.5px/1.4 var(--f-ui)"
+                 x-text="reportError"></div>
+
+            {{-- Actions --}}
+            <div style="display:flex;gap:8px;margin-top:4px">
+              <button type="button" @click="showReport=false"
+                      style="flex:1;height:38px;border-radius:9px;border:0.5px solid var(--line-2);
+                             background:var(--surface-2);font:500 13px/1 var(--f-ui);color:var(--ink-2);cursor:pointer">
+                Annuler
+              </button>
+              <button type="button" @click="submitReport()"
+                      :disabled="!reportReason || reporting"
+                      :style="reportReason && !reporting
+                        ? 'opacity:1;cursor:pointer;background:linear-gradient(135deg,#7E5BEF,#2563EB)'
+                        : 'opacity:0.45;cursor:not-allowed;background:var(--surface-3)'"
+                      style="flex:1;height:38px;border-radius:9px;border:0;color:#fff;
+                             font:600 13px/1 var(--f-ui);transition:opacity .18s;display:inline-flex;align-items:center;justify-content:center;gap:7px">
+                <template x-if="reporting">
+                  <svg width="13" height="13" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.5"
+                       stroke-linecap="round" style="animation:spin 1s linear infinite">
+                    <circle cx="15" cy="15" r="12" stroke-opacity=".3"/><path d="M15 3 a12 12 0 0 1 12 12"/>
+                  </svg>
+                </template>
+                <x-ui.icon name="flag" size="12"/>
+                Signaler
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+  </template>
+  @endif
+
 </article>

@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\{Post, User, ModerationReport, Event, Group};
+use App\Models\{Post, User, ModerationReport, Event, Group, Message};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -48,13 +48,29 @@ class DashboardController extends Controller
         $clubPosts      = Post::where('school_id', $schoolId)->whereHas('group', fn($q) => $q->where('kind', 'club'))->count();
         $clubPct        = $totalPosts > 0 ? min(100, round(($clubPosts / $totalPosts) * 100)) : 0;
 
+        // ── Messages ─────────────────────────────────────────────────────────
+        $unreadTotal = Message::where('recipient_id', $user->id)->whereNull('read_at')->count();
+
+        $recentConversations = User::whereIn('id', function ($q) use ($user) {
+            $q->select(DB::raw('CASE WHEN sender_id = '.$user->id.' THEN recipient_id ELSE sender_id END'))
+              ->from('messages')
+              ->where(fn($q2) => $q2->where('sender_id', $user->id)->orWhere('recipient_id', $user->id));
+        })->get()->map(function ($u) use ($user) {
+            $u->last_message = Message::where(fn($q) => $q->where('sender_id', $user->id)->where('recipient_id', $u->id))
+                ->orWhere(fn($q) => $q->where('sender_id', $u->id)->where('recipient_id', $user->id))
+                ->latest()->first();
+            $u->unread_count = Message::where('sender_id', $u->id)->where('recipient_id', $user->id)->whereNull('read_at')->count();
+            return $u;
+        })->sortByDesc(fn($u) => $u->last_message?->created_at)->take(5)->values();
+
         return view('dashboard.show', compact(
             'school', 'weekNumber',
             'activeStudents', 'totalStudents', 'postsThisWeek', 'postsLastWeek',
             'pendingReports', 'reports',
             'chartData', 'chartDays',
             'classes', 'events',
-            'engagementPct', 'clubPct'
+            'engagementPct', 'clubPct',
+            'unreadTotal', 'recentConversations'
         ));
     }
 
